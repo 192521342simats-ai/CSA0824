@@ -1,0 +1,51 @@
+expenses = []
+budgets = {}
+
+def add_expense(category, amount):
+    expenses.append((category, amount))
+    print("Expense added!")
+
+def set_budget(category, limit_amount):
+    budgets[category] = limit_amount
+    print(f"Budget set for {category}: {limit_amount}")
+
+def show_budget_status():
+    print("\n--- REAL-TIME BUDGET TRACKING ---")
+    for category, limit_amount in budgets.items():
+        spent = sum(a for c, a in expenses if c == category)
+        remaining = limit_amount - spent
+        usage = (spent / limit_amount * 100) if limit_amount > 0 else 0
+        print(f"{category}: Spent {spent}, Remaining {remaining}, Usage {usage:.1f}%")
+
+def expense_analysis():
+    print("\n--- EXPENSE ANALYSIS ---")
+    total = sum(a for _, a in expenses)
+    print(f"Total Expenses: {total}")
+    for category in set(c for c, _ in expenses):
+        amount = sum(a for c, a in expenses if c == category)
+        percent = (amount / total * 100) if total > 0 else 0
+        print(f"{category}: {amount} ({percent:.1f}%)")
+
+# --- SIMPLE MENU ---
+while True:
+    print("\n1. Add Expense\n2. Set Budget\n3. Real-Time Budget\n4. Expense Analysis\n0. Exit")
+    choice = input("Choice: ")
+
+    if choice == "1":
+        cat = input("Category: ")
+        amt = float(input("Amount: "))
+        add_expense(cat, amt)
+
+    elif choice == "2":
+        cat = input("Category: ")
+        limit = float(input("Budget Limit: "))
+        set_budget(cat, limit)
+
+    elif choice == "3":
+        show_budget_status()
+
+    elif choice == "4":
+        expense_analysis()
+
+    elif choice == "0":
+        break
